@@ -1,0 +1,18 @@
+Config { font = "xft:Open Sans Regular:size=10:antialias=true"
+        , bgColor = "black"
+        , fgColor = "grey"
+        , position = TopW L 90
+        , lowerOnStart = True
+        , commands = [ Run Cpu ["-L","3","-H","70","--normal","green","--high","red", "-t", "CPU <total>"] 10
+                , Run CpuFreq ["-t", "<cpu0>GHz <cpu1>GHz"] 10
+                , Run Memory ["-t", "MEM <usedratio>%"] 10
+                , Run Date "%a %b %_d %H:%M" "date" 10
+                , Run Battery ["-t","BAT <left>", "-h", "green", "60", "-l", "red", "10"] 10
+                , Run StdinReader
+                , Run Weather "YSSY" ["-t"," <tempC>C","-L","10","-H","35","--normal","green","--high","red","--low","lightblue"] 36000
+                , Run DynNetwork [] 10
+                ]
+        , sepChar = "%"
+        , alignSep = "}{"
+        , template = "%StdinReader% }{ %cpu% %cpufreq% | %memory% | %dynnetwork% | %battery% %YSSY% <fc=#ee9a00>%date%</fc>"
+        }
