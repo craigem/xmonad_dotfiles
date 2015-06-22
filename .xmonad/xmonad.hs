@@ -20,14 +20,14 @@ main = do
                 --, borderWidth = 1
                 } `additionalKeys`
                         -- Lock the screen
-                        [ ((mod4Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
+                        [ ((0, 0x1008ff2d), spawn "xscreensaver-command -lock") -- XF86ScreenSaver
                         , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
                         , ((0, xK_Print), spawn "scrot")
                         -- Turn off the display port
                         , ((mod4Mask, xK_d), spawn "/usr/bin/xrandr --output DP1 --off")
                         -- Turn on the display port and set it as the primary display
                         , ((mod4Mask .|. shiftMask, xK_d), spawn "/usr/bin/xrandr --output DP1 --primary ; /usr/bin/xrandr --output LVDS1 --mode 1280x800; /usr/bin/xrandr --output DP1 --mode 2560x1440; /usr/bin/xrandr --output DP1 --left-of LVDS1")
-                        , ((0 , 0x1008FF11), spawn "amixer set Master 2%-")
-                        , ((0 , 0x1008FF13), spawn "amixer set Master 2%+")
-                        , ((0 , 0x1008FF12), spawn "amixer set Master toggle")
+                        , ((0 , 0x1008FF11), spawn "amixer set Master 2%-") -- XF86AudioLowerVolume
+                        , ((0 , 0x1008FF13), spawn "amixer set Master 2%+")-- XF86AudioRaiseVolume
+                        , ((0 , 0x1008FF12), spawn "amixer set Master toggle") -- XF86AudioMute
                 ]
