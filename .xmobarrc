@@ -1,18 +1,92 @@
-Config { font = "xft:Deja Vu Sans Mono (Book):size=10:antialias=true"
-        , bgColor = "black"
-        , fgColor = "grey"
-        , position = TopW L 90
-        , lowerOnStart = True
-        , commands = [ Run Cpu ["-L","3","-H","70","--normal","green","--high","red", "-t", "CPU <total>"] 10
-                , Run CpuFreq ["-t", "<cpu0>GHz <cpu1>GHz"] 10
-                , Run Memory ["-t", "MEM <usedratio>%"] 10
-                , Run Date "%a %b %_d %H:%M" "date" 10
-                , Run Battery ["-t","BAT <left>", "-h", "green", "60", "-l", "red", "10"] 10
-                , Run StdinReader
-                , Run Weather "YBRK" ["-t"," <tempC>C","-L","10","-H","35","--normal","green","--high","red","--low","lightblue"] 36000
-                , Run DynNetwork [] 10
-                ]
-        , sepChar = "%"
-        , alignSep = "}{"
-        , template = "%StdinReader% }{ %cpu% %cpufreq% | %memory% | %dynnetwork% | %battery% %YBRK% <fc=#ee9a00>%date%</fc>"
-        }
+Config {
+
+    -- Appearance
+      font = "xft:Deja Vu Sans Mono (Book):size=10:antialias=true"
+    , bgColor = "black"
+    , fgColor = "grey"
+    , position = TopW L 90
+
+    -- Layout
+    , sepChar = "%"
+    , alignSep = "}{"
+    , template = "%StdinReader% }{ %multicpu% %coretemp% %cpufreq% | %memory% | %dynnetwork% | %battery% | %YBRK% | %date%"
+
+    -- Behaviour
+    , lowerOnStart = False
+    , pickBroadest = True   -- choose widest display (multi-monitor)
+
+    --Plugins
+    , commands =
+        -- CPU Activity Monitor
+        [ Run MultiCpu       [ "--template" , "CPU: <total0>%|<total2>%"
+                             , "--Low"      , "30"         -- units: %
+                             , "--High"     , "70"         -- units: %
+                             , "--low"      , "lightblue"
+                             , "--normal"   , "green"
+                             , "--high"     , "red"
+                             ] 10
+
+        -- cpu core temperature monitor
+        , Run CoreTemp       [ "--template" , "Temp: <core0>°C|<core1>°C"
+                             , "--Low"      , "30"        -- units: °C
+                             , "--High"     , "80"        -- units: °C
+                             , "--low"      , "lightblue"
+                             , "--normal"   , "green"
+                             , "--high"     , "red"
+                             ] 50
+
+        -- CPU Frequency
+        , Run CpuFreq        [ "--template" , "<cpu0>GHz <cpu1>GHz"
+                             ] 10
+
+        -- Memory Usage Monitor
+        , Run Memory         [ "--template" , "MEM <usedratio>%"
+                             , "--Low"      , "20"        -- units: %
+                             , "--High"     , "90"        -- units: %
+                             , "--low"      , "lightblue"
+                             , "--normal"   , "green"
+                             , "--high"     , "red"
+                             ] 10
+
+        -- Battery Monitor
+        , Run Battery        [ "--template" , "BAT: <acstatus>"
+                             , "--Low"      , "10"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "red"
+                             , "--normal"   , "green"
+                             , "--high"     , "lightblue"
+
+                             , "--" -- battery specific options
+                                       -- discharging status
+                                       , "-o"   , "<left>% (<timeleft>)"
+                                       -- AC "on" status
+                                       , "-O" , "<fc=#FFA500>Charging</fc>"
+                                       -- charged status
+                                       , "-i"   , "<fc=#ADD8E6>Charged</fc>"
+                             ] 50
+
+        -- Read from STDIN
+        , Run StdinReader
+
+        -- Weather Monitor
+        , Run Weather "YBRK" [ "--template" , " <tempC>°C"
+                             , "--Low"      , "10"
+                             , "--High"     , "35"
+                             , "--low"      , "lightblue"
+                             , "--normal"   , "green"
+                             , "--high"     , "red"
+                             ] 36000
+
+        -- Network Activity Monitor
+        , Run DynNetwork     [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+                             , "--Low"      , "1000"       -- units: kB/s
+                             , "--High"     , "5000"       -- units: kB/s
+                             , "--low"      , "lightblue"
+                             , "--normal"   , "green"
+                             , "--high"     , "red"
+                             ] 10
+
+        -- Time and Date Display
+        , Run Date           "<fc=#ee9a00>%a %b %_d %H:%M</fc>" "date" 10
+        ]
+}
