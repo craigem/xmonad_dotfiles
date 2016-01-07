@@ -9,10 +9,10 @@ Config { font = "xft:Deja Vu Sans Mono (Book):size=10:antialias=true"
                 , Run Date "%a %b %_d %H:%M" "date" 10
                 , Run Battery ["-t","BAT <left>", "-h", "green", "60", "-l", "red", "10"] 10
                 , Run StdinReader
-                , Run Weather "YSSY" ["-t"," <tempC>C","-L","10","-H","35","--normal","green","--high","red","--low","lightblue"] 36000
+                , Run Weather "YBRK" ["-t"," <tempC>C","-L","10","-H","35","--normal","green","--high","red","--low","lightblue"] 36000
                 , Run DynNetwork [] 10
                 ]
         , sepChar = "%"
         , alignSep = "}{"
-        , template = "%StdinReader% }{ %cpu% %cpufreq% | %memory% | %dynnetwork% | %battery% %YSSY% <fc=#ee9a00>%date%</fc>"
+        , template = "%StdinReader% }{ %cpu% %cpufreq% | %memory% | %dynnetwork% | %battery% %YBRK% <fc=#ee9a00>%date%</fc>"
         }
