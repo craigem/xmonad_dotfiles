@@ -30,7 +30,7 @@ main = do
                         -- Turn on the display port and set it as the primary display
                         , ((mod4Mask .|. shiftMask, xK_d), spawn "/usr/bin/xrandr --output DP1 --primary ; /usr/bin/xrandr --output LVDS1 --mode 1280x800; /usr/bin/xrandr --output DP1 --mode 2560x1440; /usr/bin/xrandr --output DP1 --left-of LVDS1")
                         -- Turn off the HDMI port
-                        , ((mod4Mask, xK_h), spawn "/usr/bin/xrandr --output HDMI1 --off")
+                        , ((mod4Mask .|. controlMask, xK_h), spawn "/usr/bin/xrandr --output HDMI1 --off")
                         -- Turn on the HDMI port and set it as the primary display
                         , ((mod4Mask .|. shiftMask, xK_h), spawn "/usr/bin/xrandr --output HDMI1 --primary ; /usr/bin/xrandr --output LVDS1 --mode 1280x800; /usr/bin/xrandr --output HDMI1 --mode 1600x900; /usr/bin/xrandr --output HDMI1 --left-of LVDS1")
                         , ((mod4Mask, xK_v), spawn "/usr/bin/xrandr --output VGA1 --off")
