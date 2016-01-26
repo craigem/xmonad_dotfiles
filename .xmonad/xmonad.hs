@@ -10,7 +10,7 @@ main = do
         -- Launch xmobar as my task bar.
         xmonad $ defaultConfig
                 { focusFollowsMouse = False
-                , terminal = "terminology"
+                , terminal = "lxterminal"
                 , manageHook = manageDocks <+> manageHook defaultConfig
                 , layoutHook = avoidStruts $ layoutHook defaultConfig
                 , logHook = dynamicLogWithPP $ xmobarPP
